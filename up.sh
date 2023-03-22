@@ -9,6 +9,9 @@ set -eoux pipefail
 
   GOVUK_DOCKER_COMMAND='govuk-docker up -d'
 
+  # Start nginx proxy
+  $GOVUK_DOCKER_COMMAND nginx-proxy
+
   # Start publishing applications
   $GOVUK_DOCKER_COMMAND publishing-api-app
   $GOVUK_DOCKER_COMMAND content-publisher-app
