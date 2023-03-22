@@ -5,7 +5,7 @@ set -eoux pipefail
 # Time: ~20 minutes from scratch
 
 (
-  # Change into GOV.UK Docker directory for running `make`
+  # Change into GOV.UK Docker directory (in a subshell to not affect shell)
   govuk_docker_dir="${GOVUK_ROOT_DIR:-$HOME/govuk}/govuk-docker"
   cd "$govuk_docker_dir"
 
