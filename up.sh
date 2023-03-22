@@ -9,8 +9,16 @@ set -eoux pipefail
 
   GOVUK_DOCKER_COMMAND='govuk-docker up -d'
 
-  # Start nginx proxy
+  # Start dependencies that are needed for applications
   $GOVUK_DOCKER_COMMAND nginx-proxy
+  $GOVUK_DOCKER_COMMAND redis
+  $GOVUK_DOCKER_COMMAND rabbitmq
+
+  # Sleep to avoid race conditions where services aren't ready before apps try and bind to them
+  sleep 5
+
+  # Ensure search-api has its required message queues (these don't persist container restarts)
+  govuk-docker run --rm search-api-lite bundle exec rake message_queue:create_queues
 
   # Start publishing applications
   $GOVUK_DOCKER_COMMAND publishing-api-app
